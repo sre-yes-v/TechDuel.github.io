@@ -1,0 +1,112 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link rel="stylesheet" href="style.css">
+    <title>Quiz Result</title>
+</head>
+<body>
+    <div class="logo">
+        <img src="./assets/shLogo.png" id="shLogo">
+        <img src="./assets/astraLogo.png" id="astra">
+        <img src="./assets/80years.png" id="years80">
+    </div>
+    <div class="bg1">
+
+        <div class="form-container">
+            <h1>Thank You For Your Participation!</h1><br><BR>
+            <div id="result"></div>
+        </div>
+    </div>
+    <script>
+        // Fetch user details and quiz result from localStorage
+const name = localStorage.getItem("userName") || "Unknown";
+const regNumber = localStorage.getItem("userRegNumber") || "Unknown";
+const college = localStorage.getItem("userCollege") || "Unknown";
+const quizResult = JSON.parse(localStorage.getItem("quizResult")) || [];
+
+const resultContainer = document.getElementById("result");
+
+// Display participant details
+const participantDetails = document.createElement("div");
+participantDetails.classList.add("participant-details");
+participantDetails.innerHTML = `
+    <div class=stuDetail>
+        <h2>Participant Details</h2>
+        <p><strong>Name:</strong> ${name}</p>
+        <p><strong>Registration Number:</strong> ${regNumber}</p>
+        <p><strong>College:</strong> ${college}</p>
+    </div><br><BR>
+`;
+resultContainer.appendChild(participantDetails);
+
+// Display quiz result
+if (quizResult.length === 0) {
+    const noDataMessage = document.createElement("p");
+    noDataMessage.textContent = "No quiz data available.";
+    resultContainer.appendChild(noDataMessage);
+} else {
+    quizResult.forEach((item, index) => {
+        const questionEl = document.createElement("div");
+        questionEl.classList.add("question");
+        questionEl.textContent = `${index + 1}. ${item.question}`;
+
+        const answerEl = document.createElement("div");
+        answerEl.classList.add("answer");
+        answerEl.textContent = `Your answer: ${item.answer || "No answer provided"}`;
+
+        resultContainer.appendChild(questionEl);
+        resultContainer.appendChild(answerEl);
+    });
+}
+
+// Prepare data for CSV
+const csvData = [
+    { label: "Name", value: name },
+    { label: "Registration Number", value: regNumber },
+    { label: "College Name", value: college },
+];
+quizResult.forEach((item, index) => {
+    csvData.push({ label: `Q${index + 1}`, value: item.answer || "No answer provided" });
+});
+
+// Create and download CSV automatically
+function downloadCSV(data, filename) {
+    const csvRows = [];
+    csvRows.push("Label,Value");
+    data.forEach(row => {
+        csvRows.push(`"${row.label}","${row.value.replace(/"/g, '""')}"`);
+    });
+    const csvContent = csvRows.join("\n");
+    const blob = new Blob([csvContent], { type: "text/csv" });
+    const url = URL.createObjectURL(blob);
+    const a = document.createElement("a");
+    a.href = url;
+    a.download = filename;
+    document.body.appendChild(a);
+    a.click();
+    document.body.removeChild(a);
+}
+
+// Download CSV on page load
+window.onload = () => {
+    downloadCSV(csvData, "quiz_results.csv");
+
+    // Send email using mailto
+    const email = "techduel705@gmail.com"; // Replace with actual email address
+    const subject = "ASTRA Tech duel Result";
+    const body = encodeURIComponent(
+        `Participant Details:\n\n` +
+        `Name: ${name}\n` +
+        `Registration Number: ${regNumber}\n` +
+        `College: ${college}\n\n` +
+        `Quiz Results:\n` +
+        quizResult.map((item, index) => `Q${index + 1}: ${item.answer || "No answer provided"}`).join("\n")
+    );
+    window.location.href = `mailto:${email}?subject=${subject}&body=${body}`;
+};
+
+    </script>
+</body>
+</html>

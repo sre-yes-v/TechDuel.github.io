@@ -1,0 +1,50 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Tech Duel - ASTRA</title>
+    <link rel="stylesheet" href="style.css">
+</head>
+<body>
+    <div class="logo">
+        <img src="./assets/shLogo.png" id="shLogo">
+        <img src="./assets/astraLogo.png" id="astra">
+        <img src="./assets/80years.png" id="years80">
+    </div>
+    <div class="bg">
+        <img src="./assets/robot-tech.png" alt="">
+        <div class="form-container">
+            <h1>ASTRA Welcomes You!</h1>
+            <form id="user-details-form">
+                <label for="name">Name:</label>
+                <input type="text" id="name" placeholder="Enter your name" required>
+                
+                <label for="regNumber">Registration Number:</label>
+                <input type="text" id="regNumber" placeholder="Enter your register number" required>
+                
+                <label for="college">College Name:</label>
+                <input type="text" id="college" placeholder="Enter your college name" required>
+                
+                <button type="submit">Start Quiz</button>
+            </form>
+        </div>
+    </div>
+    <script>
+        document.getElementById("user-details-form").onsubmit = function (e) {
+            e.preventDefault();
+            const name = document.getElementById("name").value;
+            const regNumber = document.getElementById("regNumber").value;
+            const college = document.getElementById("college").value;
+
+            // Store user details in localStorage
+            localStorage.setItem("userName", name);
+            localStorage.setItem("userRegNumber", regNumber);
+            localStorage.setItem("userCollege", college);
+
+            // Redirect to quiz page
+            location.href = "quiz.html";
+        };
+    </script>
+</body>
+</html>

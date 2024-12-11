@@ -1,0 +1,53 @@
+    <!DOCTYPE html>
+    <html lang="en">
+    <head>
+        <meta charset="UTF-8">
+        <meta name="viewport" content="width=device-width, initial-scale=1.0">
+        <title>Quiz</title>
+        <link rel="stylesheet" href="style.css">
+        <style>
+            .option {
+                font-size: 20px;
+        font-weight: 500;
+        display: block;
+        margin: 10px 0;
+        padding: 10px;
+        width: 100%;
+        border: 1px solid #ccc;
+        border-radius: 8px;
+        cursor: pointer;
+        background: transparent;
+        color: var(--tertiary-color);
+        transition: all 0.5s ease-in-out;
+            }
+            .option:hover {
+                background: var(--tertiary-color);
+                color: var(--secondary-color);
+            }
+            .selected {
+                background-color: var(--option-bg-color);
+                color: white;
+            }
+        </style>
+    </head>
+    <body>
+        <div class="logo">
+            <img src="./assets/shLogo.png" id="shLogo">
+            <img src="./assets/astraLogo.png" id="astra">
+            <img src="./assets/80years.png" id="years80">
+        </div>
+        
+        <div class="quiz-container">
+            <h1>Quiz</h1>
+            <div id="timer">Time left: <span id="time-display">25:00</span></div>
+
+            <div id="quiz">
+                <!-- Quiz questions will be dynamically added here -->
+            </div>
+            <button id="prev-btn" disabled>Previous</button>
+            <button id="next-btn">Next</button>
+            <button id="submit-btn" style="display: none;">Submit</button>
+        </div>
+    <script src="script.js"></script>
+    </body>
+    </html>
